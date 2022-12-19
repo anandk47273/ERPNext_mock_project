@@ -23,29 +23,34 @@
   {
    "fieldname": "deduction_type",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Deduction Type",
-   "options": "Onetime\nRecurring"
+   "options": "\nOnetime\nRecurring"
   },
   {
    "fieldname": "start_date",
    "fieldtype": "Date",
+   "in_list_view": 1,
    "label": "Start date"
   },
   {
    "fieldname": "end_date",
    "fieldtype": "Date",
-   "label": "End date"
+   "in_list_view": 1,
+   "label": "End date",
+   "read_only_depends_on": "eval: doc.deduction_type == \"Onetime\""
   },
   {
    "fieldname": "amount",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-12-15 15:04:11.277673",
+ "modified": "2022-12-16 12:53:46.425376",
  "modified_by": "Administrator",
  "module": "erpnext_mock_project",
  "name": "Deduction Detail",

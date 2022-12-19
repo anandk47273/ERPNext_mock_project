@@ -11,54 +11,55 @@
   "recurring",
   "total",
   "actualpaid_amount",
-  "balance",
-  "data_7"
+  "balance"
  ],
  "fields": [
   {
    "fieldname": "month",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Month",
    "read_only": 1
   },
   {
    "fieldname": "onetime",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Onetime",
    "read_only": 1
   },
   {
    "fieldname": "recurring",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Recurring",
    "read_only": 1
   },
   {
    "fieldname": "total",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Total",
    "read_only": 1
   },
   {
    "fieldname": "actualpaid_amount",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "ActualPaid Amount "
   },
   {
    "fieldname": "balance",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Balance",
    "read_only": 1
-  },
-  {
-   "fieldname": "data_7",
-   "fieldtype": "Data"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-12-15 15:12:32.532176",
+ "modified": "2022-12-15 21:09:31.034588",
  "modified_by": "Administrator",
  "module": "erpnext_mock_project",
  "name": "Deduction Calculation",

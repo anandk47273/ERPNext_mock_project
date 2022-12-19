@@ -23,6 +23,7 @@
    "options": "Employee"
   },
   {
+   "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
    "label": "Employee Name",
@@ -65,7 +66,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-15 15:27:00.709718",
+ "modified": "2022-12-15 18:08:13.241104",
  "modified_by": "Administrator",
  "module": "erpnext_mock_project",
  "name": "Employee Deduction",
