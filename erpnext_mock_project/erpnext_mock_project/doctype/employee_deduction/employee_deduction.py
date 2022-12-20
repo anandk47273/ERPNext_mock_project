@@ -14,6 +14,8 @@ def last_day_of_month(any_day):
     m = any_day[5:7]
     d = any_day[8:10]
     tot_day_in_month = monthrange(int(y),int(m))[1]
-    res = any_day.replace(d,str(tot_day_in_month))
+    # res = any_day.replace(d,str(tot_day_in_month))
+    # res2 = str(tot_day_in_month)+'-'+m+'-'+y
+    res3 = y+'-'+m+'-'+str(tot_day_in_month)
     
-    return res
+    return(res3)

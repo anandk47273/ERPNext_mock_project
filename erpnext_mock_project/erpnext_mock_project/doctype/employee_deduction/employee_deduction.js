@@ -94,9 +94,10 @@ frappe.ui.form.on('Deduction Detail',{
 				"any_day":child.start_date
 			},
 			callback:function(r){
-				console.log(r)
-				frappe.msgprint(r)
-				frm.set_value('deduction_detail.end_date',r)
+				console.log(r);
+				frappe.msgprint(r);
+				frappe.model.set_value(cdt,cdn,'end_date',r.message);
+				cur_frm.refresh_field('end_date');
 			}
 		})
 	
