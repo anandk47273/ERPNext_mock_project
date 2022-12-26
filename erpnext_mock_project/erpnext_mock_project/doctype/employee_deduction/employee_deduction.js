@@ -5,29 +5,6 @@ frappe.ui.form.on('Employee Deduction', {
 	//code here
 });
 
-// Performing actions on child table
-
-// frappe.ui.form.on('Deduction Detail', {
-// 	deduction_type:function(frm){
-// 		if(frm.doc.deduction_type == 'Onetime'){
-// 			//frm.set_df_property("end_date", "read_only",1);
-// 			frm.fields_dict.items.grid.update_docfield_property('qty', "read_only", 1);
-// 			frappe.msgprint("trigger on deduction type");
-// 		}
-// 	}
-// });
-
-
-// frappe.ui.form.on('Deduction Detail', {
-// 	deduction_type:function(frm){
-// 		if(frm.doc.deduction_type == 'Onetime'){
-// 			var df = frappe.meta.get_docfield("Deduction Detail","end_date", cur_frm.doc.name);
-// 			df.read_only = 1;
-// 			console.log(df)
-// 			frappe.msgprint(df)
-// 		}
-// 	}
-// });
 
 //every time grabbing dec 31 
 
@@ -82,6 +59,7 @@ frappe.ui.form.on('Employee Deduction', {
 // 		}	
 // });
 
+///////// AUTO UPDATE LAST DATE IN DEDUCTION CALCULATION.////////
 frappe.ui.form.on('Deduction Detail',{
 	start_date:function(frm,cdt,cdn){
 		var child = locals[cdt][cdn]
@@ -93,128 +71,92 @@ frappe.ui.form.on('Deduction Detail',{
 			},
 			callback:function(r){
 				console.log(r);
-				frappe.msgprint(r);
-				frappe.model.set_value(cdt,cdn,'end_date',r.message);
-				cur_frm.refresh_field('end_date');
+				if (child.deduction_type =='Onetime'){
+					frappe.model.set_value(cdt,cdn,'end_date',r.message);
+					cur_frm.refresh_field('end_date');
+				}
 			}
 		})
 	
 		}	
 });
 
-//taking value from deduction detail and setting in deduction calculation.
-// frappe.ui.form.on('Employee Deduction',  {
-//     validate: function(frm) {
-//         for (let row of frm.doc.deduction_detail){
-// 			if(row.deduction_type == 'Onetime'){
-// 				frappe.throw('Yes')
-// 			}
-// 		}
-        
-//     } 
-// });
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // /////////// working //////////
 
-// frappe.ui.form.on('Deduction Detail',{
-// 	amount:function(frm,cdt,cdn){
-// 		var d = locals[cdt][cdn]
-// 		console.log(d)
-// 		frappe.call({
-// 			method:"erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.get_month_and_year",
-// 			args:{
-// 				"put_date":d.start_date
-// 			},
-// 			callback:function(r){
-// 				// console.log(r);
-// 				// frappe.msgprint(r);
-// 				var month_output = r.message;
-			
-// 			}
-// 		})
-// 		var child = cur_frm.add_child("deduction_calculation");
-// // 			console.log(d)
-// // 			console.log(child)
-// 			if(d.deduction_type=='Onetime'){
-// 				child.onetime=d.amount;
-// 			}
-// 			if(d.deduction_type=='Recurring'){
-// 				child.recurring=d.amount;
-// 			}
-// 			child.total=d.amount
-            
-// 			// child.month = month_output;
-// 			// child.fieldname="Text" ;
-// 			cur_frm.refresh_fields("deduction_calculation");
-	
-// 		}	
-// });
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-
-// THis one is working
-
-// frappe.ui.form.on('Deduction Detail',{
-// 	amount:function(frm,cdt,cdn){
-// 		var d = locals[cdt][cdn];
-
-// 		var child = cur_frm.add_child("deduction_calculation");
-// 			console.log(d)
-// 			console.log(child)
-//             child.onetime=d.amount;
-// 			// child.fieldname="Text" ;
-// 			cur_frm.refresh_fields("deduction_calculation");
-// 	}
-// }
-
-// )
-
-///// Date correct format call.
-
 frappe.ui.form.on('Deduction Detail',{
 	amount:function(frm,cdt,cdn){
-		var x = locals[cdt][cdn]
-		console.log(x)
+		var d = locals[cdt][cdn]
+		console.log(d)
 		frappe.call({
 			method:"erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.get_month_and_year",
 			args:{
-				"st_date":x.start_date,
-				"en_date":x.end_date
+				"put_date":d.start_date
 			},
 			callback:function(r){
-				console.log(r);
-				frappe.msgprint(r);
-				var month_output = r.message.split(',')
-				console.log(month_output)
 				var child = cur_frm.add_child("deduction_calculation");
-				for (let a in month_output) {
-					child.month = month_output[a]
-					// cur_frm.refresh_fields("deduction_calculation");
-					
+				var month_output = r.message;
+				if (d.deduction_type =='Onetime'){
+					child.month=month_output;
+					child.total=d.amount;
+					child.onetime = d.amount
 				}
-				// child.month = month_output
 				cur_frm.refresh_fields("deduction_calculation");
-	// 			console.log(d)
-	// 			console.log(child)
-				// if(x.deduction_type=='Onetime'){
-				// 	child.onetime=x.amount;
-				// }
-				// if(d.deduction_type=='Recurring'){
-				// 	child.recurring=x.amount;
-				// }
-				// child.total=x.amount
-				
-				
-				// child.fieldname="Text" ;
-				
 			}
 		})
-	
-		}	
+	}	
 });
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+///// Date correct format call.
+// For every month in betweeen start date and end date.
+
+// frappe.ui.form.on('Deduction Detail',{
+// 	amount:function(frm,cdt,cdn){
+// 		var x = locals[cdt][cdn]
+// 		console.log(x)
+// 		frappe.call({
+// 			method:"erpnext_mock_project.erpnext_mock_project.doctype.employee_deduction.employee_deduction.get_month_and_year",
+// 			args:{
+// 				"st_date":x.start_date,
+// 				"en_date":x.end_date
+// 			},
+// 			callback:function(r){
+// 				console.log(r);
+// 				frappe.msgprint(r);
+// 				// var month_output = r.message.split(',')
+// 				var month_output = r.message;
+// 					// console.log(month_output);
+// 				var child = cur_frm.add_child("deduction_calculation");
+// 				for (let a in month_output) {
+// 					console.log(month_output[a])
+// 					child.month = month_output[a]
+// 					cur_frm.refresh_fields("deduction_calculation");
+					
+// 				}
+// 				child.month = month_output
+// 				// cur_frm.refresh_fields("deduction_calculation");
+// 	// 			console.log(d)
+// 	// 			console.log(child)
+// 				// if(x.deduction_type=='Onetime'){
+// 				// 	child.onetime=x.amount;
+// 				// }
+// 				// if(d.deduction_type=='Recurring'){
+// 				// 	child.recurring=x.amount;
+// 				// }
+// 				// child.total=x.amount
+				
+				
+// 				// child.fieldname="Text" ;
+				
+// 			}
+// 		})
+	
+// 		}	
+// });
 
 
 ////////////// TASKS RELATED TO VALIDATION ///////////////////////////
@@ -227,7 +169,7 @@ frappe.ui.form.on('Deduction Detail',{
 	},
 	amount:function(frm,cdt,cdn){
 		let validate_amount = locals[cdt][cdn]
-		if (validate_amount.amount=0){
+		if (validate_amount.amount<=0){
 			frappe.throw('Please enter amount.')
 		}
 	},
